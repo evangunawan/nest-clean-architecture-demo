@@ -1,3 +1,5 @@
+import * as Joi from 'joi';
+
 export default class CreateUserDto {
   public username: string;
   public password: string;
@@ -9,3 +11,9 @@ export default class CreateUserDto {
     this.fullName = props.fullName;
   }
 }
+
+export const createUserValidationPipe = Joi.object<CreateUserDto>({
+  username: Joi.string().required(),
+  password: Joi.string().required(),
+  fullName: Joi.string().required(),
+});

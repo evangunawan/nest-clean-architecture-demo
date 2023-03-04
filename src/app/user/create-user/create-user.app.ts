@@ -11,6 +11,12 @@ export default class CreateUserApp extends UseCase {
   }
 
   public async execute(dto: CreateUserDto) {
+    const existingUsername = await this._userRepository.fetchByUsername(dto.username);
+
+    if (existingUsername) {
+      throw new Error('username exists');
+    }
+
     const newUser = await this._userRepository.createUser(
       new User({
         username: dto.username,

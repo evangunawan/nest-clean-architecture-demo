@@ -15,6 +15,19 @@ export default class MongooseUserRepository implements UserRepositoryInterface {
     return this.mapToEntity(await newUser.save());
   }
 
+  public async fetchByUsername(username: string): Promise<User> {
+    const user = await this.userModel.find({ username: username }).exec();
+    if (user[0]) {
+      return this.mapToEntity(user[0]);
+    }
+    return null;
+  }
+
+  public async fetchById(id: string): Promise<User> {
+    const user = await this.userModel.findById(id).exec();
+    return user ? this.mapToEntity(user) : null;
+  }
+
   private mapToModel(user: User) {
     return new UserModel({
       username: user.username,
